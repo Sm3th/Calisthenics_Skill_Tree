@@ -39,6 +39,20 @@ describe("App interactions", () => {
     );
   });
 
+  it("opens the info modal from the (i) button", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    expect(screen.queryByTestId("info-modal")).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: /about this skill tree/i })
+    );
+    expect(screen.getByTestId("info-modal")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /how the skill tree works/i })
+    ).toBeInTheDocument();
+  });
+
   it("filters skills by search query", async () => {
     const user = userEvent.setup();
     render(<App />);

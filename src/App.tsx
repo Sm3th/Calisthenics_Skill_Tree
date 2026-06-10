@@ -6,6 +6,7 @@ import { SearchFilter } from "./components/SearchFilter";
 import { CategoryProgress } from "./components/CategoryProgress";
 import { SkillTree } from "./components/SkillTree";
 import { SkillDetailPanel } from "./components/SkillDetailPanel";
+import { InfoModal } from "./components/InfoModal";
 
 export default function App() {
   const {
@@ -24,6 +25,7 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState<Category | "All">("All");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [justMasteredId, setJustMasteredId] = useState<string | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const filtered = useMemo(() => {
@@ -104,6 +106,7 @@ export default function App() {
         onExport={handleExport}
         onImport={handleImportClick}
         onReset={handleReset}
+        onInfo={() => setShowInfo(true)}
         onRecommendedClick={setSelectedId}
       />
 
@@ -160,6 +163,8 @@ export default function App() {
         onClose={() => setSelectedId(null)}
         onSetMark={handleSetMark}
       />
+
+      <InfoModal open={showInfo} onClose={() => setShowInfo(false)} />
     </div>
   );
 }

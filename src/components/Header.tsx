@@ -7,6 +7,7 @@ interface HeaderProps {
   onExport: () => void;
   onImport: () => void;
   onReset: () => void;
+  onInfo: () => void;
   onRecommendedClick: (id: string) => void;
 }
 
@@ -16,6 +17,7 @@ export function Header({
   onExport,
   onImport,
   onReset,
+  onInfo,
   onRecommendedClick,
 }: HeaderProps) {
   return (
@@ -26,10 +28,21 @@ export function Header({
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lime">
               Street Workout
             </p>
-            <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Calisthenics{" "}
-              <span className="text-lime">Skill Tree</span>
-            </h1>
+            <div className="mt-2 flex items-center gap-3">
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+                Calisthenics{" "}
+                <span className="text-lime">Skill Tree</span>
+              </h1>
+              <button
+                type="button"
+                onClick={onInfo}
+                aria-label="About this skill tree"
+                title="What is this? How it works"
+                className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-edge text-sm font-semibold text-zinc-400 transition hover:border-lime hover:text-lime focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/80"
+              >
+                i
+              </button>
+            </div>
             <p className="mt-3 max-w-xl text-zinc-400">
               Explore branching progressions, unlock the next move, and track
               your journey from your first push-up to the full planche.
