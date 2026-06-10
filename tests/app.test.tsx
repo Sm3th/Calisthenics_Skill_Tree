@@ -39,6 +39,22 @@ describe("App interactions", () => {
     );
   });
 
+  it("defaults the mobile view to the Skill Tree tab and switches to Progress", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    const treeTab = screen.getByRole("tab", { name: /skill tree/i });
+    const progressTab = screen.getByRole("tab", { name: /^progress$/i });
+
+    // Default: Skill Tree is the active tab.
+    expect(treeTab).toHaveAttribute("aria-selected", "true");
+    expect(progressTab).toHaveAttribute("aria-selected", "false");
+
+    await user.click(progressTab);
+    expect(progressTab).toHaveAttribute("aria-selected", "true");
+    expect(treeTab).toHaveAttribute("aria-selected", "false");
+  });
+
   it("opens the info modal from the (i) button", async () => {
     const user = userEvent.setup();
     render(<App />);

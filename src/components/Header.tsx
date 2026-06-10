@@ -1,9 +1,12 @@
 import type { Skill } from "../data/skills";
 import type { OverallProgress } from "../lib/tree";
+import { MobileTabs, type MobileTab } from "./MobileTabs";
 
 interface HeaderProps {
   overall: OverallProgress;
   recommended: Skill | null;
+  mobileTab: MobileTab;
+  onTabChange: (tab: MobileTab) => void;
   onExport: () => void;
   onImport: () => void;
   onReset: () => void;
@@ -14,22 +17,28 @@ interface HeaderProps {
 export function Header({
   overall,
   recommended,
+  mobileTab,
+  onTabChange,
   onExport,
   onImport,
   onReset,
   onInfo,
   onRecommendedClick,
 }: HeaderProps) {
+  const onProgressTab = mobileTab === "progress";
+  const onTreeTab = mobileTab === "tree";
+
   return (
     <header className="border-b border-edge bg-gradient-to-b from-surface to-ink">
-      <div className="mx-auto max-w-6xl px-5 py-8 sm:py-10">
+      <div className="mx-auto max-w-6xl px-5 py-6 sm:py-8 md:py-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          {/* Title block — always visible; slimmer on mobile */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lime">
               Street Workout
             </p>
             <div className="mt-2 flex items-center gap-3">
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+              <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
                 Calisthenics{" "}
                 <span className="text-lime">Skill Tree</span>
               </h1>
@@ -43,13 +52,24 @@ export function Header({
                 i
               </button>
             </div>
-            <p className="mt-3 max-w-xl text-zinc-400">
+            <p className="mt-2 max-w-xl text-sm text-zinc-400 sm:mt-3 sm:text-base">
               Explore branching progressions, unlock the next move, and track
               your journey from your first push-up to the full planche.
             </p>
           </div>
 
-          <div className="flex flex-col items-start gap-3 md:items-end">
+          {/* Mobile-only tab switcher (hidden from md up) */}
+          <div className="md:hidden">
+            <MobileTabs value={mobileTab} onChange={onTabChange} />
+          </div>
+
+          {/* Stat + toolbar — Progress tab on mobile, always shown on desktop */}
+          <div
+            className={[
+              onProgressTab ? "flex" : "hidden",
+              "flex-col items-start gap-3 md:flex md:items-end",
+            ].join(" ")}
+          >
             <div className="flex items-baseline gap-2">
               <span className="text-5xl font-extrabold text-lime">
                 {overall.mastered}
@@ -75,11 +95,15 @@ export function Header({
           </div>
         </div>
 
+        {/* Recommended banner — Tree tab on mobile, always shown on desktop */}
         {recommended && (
           <button
             type="button"
             onClick={() => onRecommendedClick(recommended.id)}
-            className="mt-8 flex w-full items-center gap-3 rounded-xl border border-lime/40 bg-lime/5 px-4 py-3 text-left transition hover:bg-lime/10 sm:w-auto"
+            className={[
+              onTreeTab ? "flex" : "hidden",
+              "mt-6 w-full items-center gap-3 rounded-xl border border-lime/40 bg-lime/5 px-4 py-3 text-left transition hover:bg-lime/10 md:mt-8 md:flex md:w-auto",
+            ].join(" ")}
           >
             <span aria-hidden className="text-lg">
               ⚡

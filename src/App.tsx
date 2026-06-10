@@ -7,6 +7,8 @@ import { CategoryProgress } from "./components/CategoryProgress";
 import { SkillTree } from "./components/SkillTree";
 import { SkillDetailPanel } from "./components/SkillDetailPanel";
 import { InfoModal } from "./components/InfoModal";
+import { Footer } from "./components/Footer";
+import type { MobileTab } from "./components/MobileTabs";
 
 export default function App() {
   const {
@@ -26,7 +28,11 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [justMasteredId, setJustMasteredId] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [mobileTab, setMobileTab] = useState<MobileTab>("tree");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const onTreeTab = mobileTab === "tree";
+  const onProgressTab = mobileTab === "progress";
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -103,6 +109,8 @@ export default function App() {
       <Header
         overall={overall}
         recommended={recommended}
+        mobileTab={mobileTab}
+        onTabChange={setMobileTab}
         onExport={handleExport}
         onImport={handleImportClick}
         onReset={handleReset}
@@ -119,42 +127,45 @@ export default function App() {
         data-testid="import-input"
       />
 
-      <main className="mx-auto max-w-6xl px-5 py-8">
-        <CategoryProgress data={categories} />
-
-        <div className="my-8">
-          <SearchFilter
-            query={query}
-            activeCategory={activeCategory}
-            onQueryChange={setQuery}
-            onCategoryChange={setActiveCategory}
-          />
+      <main className="mx-auto max-w-6xl px-5 py-6 md:py-8">
+        {/* Category bars — Progress tab on mobile, always shown on desktop */}
+        <div className={onProgressTab ? "block md:block" : "hidden md:block"}>
+          <CategoryProgress data={categories} />
         </div>
 
-        {visibleCategories.length === 0 ? (
-          <p className="py-16 text-center text-zinc-500">
-            No skills match your search.
-          </p>
-        ) : (
-          visibleCategories.map((cat) => (
-            <SkillTree
-              key={cat}
-              category={cat}
-              skills={skills}
-              visible={filtered.filter((s) => s.category === cat)}
-              states={states}
-              selectedId={selectedId}
-              justMasteredId={justMasteredId}
-              onSelect={setSelectedId}
+        {/* Search + tree — Tree tab on mobile, always shown on desktop */}
+        <div className={onTreeTab ? "block md:block" : "hidden md:block"}>
+          <div className="mb-8 md:my-8">
+            <SearchFilter
+              query={query}
+              activeCategory={activeCategory}
+              onQueryChange={setQuery}
+              onCategoryChange={setActiveCategory}
             />
-          ))
-        )}
+          </div>
+
+          {visibleCategories.length === 0 ? (
+            <p className="py-16 text-center text-zinc-500">
+              No skills match your search.
+            </p>
+          ) : (
+            visibleCategories.map((cat) => (
+              <SkillTree
+                key={cat}
+                category={cat}
+                skills={skills}
+                visible={filtered.filter((s) => s.category === cat)}
+                states={states}
+                selectedId={selectedId}
+                justMasteredId={justMasteredId}
+                onSelect={setSelectedId}
+              />
+            ))
+          )}
+        </div>
       </main>
 
-      <footer className="border-t border-edge py-8 text-center text-xs text-zinc-600">
-        Built with React, TypeScript &amp; Tailwind · Progress saved locally in
-        your browser
-      </footer>
+      <Footer />
 
       <SkillDetailPanel
         skill={selectedSkill}

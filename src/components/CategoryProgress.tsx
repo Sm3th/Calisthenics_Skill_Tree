@@ -6,21 +6,21 @@ interface CategoryProgressProps {
 
 export function CategoryProgress({ data }: CategoryProgressProps) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-5">
       {data.map((c) => (
         <div
           key={c.category}
-          className="rounded-xl border border-edge bg-surface p-4"
+          className="rounded-xl border border-edge bg-surface p-3 sm:p-4"
         >
-          <div className="flex items-baseline justify-between">
-            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
+          <div className="flex items-baseline justify-between gap-1">
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400 sm:text-xs">
               {c.category}
             </span>
-            <span className="text-xs text-zinc-500">
+            <span className="text-[10px] text-zinc-500 sm:text-xs">
               {c.mastered}/{c.total}
             </span>
           </div>
-          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-edge">
+          <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-edge sm:mt-3">
             <div
               className="h-full rounded-full bg-lime transition-all duration-500"
               style={{ width: `${c.percent}%` }}
