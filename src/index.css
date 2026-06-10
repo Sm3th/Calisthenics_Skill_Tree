@@ -32,6 +32,37 @@ body {
   background: #3a3a3a;
 }
 
+/*
+ * Horizontal scroll area for each category. The scrollbar stays invisible
+ * until the user hovers (or tabs into) the area, so it doesn't clutter the
+ * tree on desktop. Track height is still reserved, so showing the thumb on
+ * hover causes no layout shift. Scrolling works the same whether shown or not.
+ */
+.tree-scroll {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+.tree-scroll:hover,
+.tree-scroll:focus-within {
+  scrollbar-color: #2a2a2a transparent;
+}
+.tree-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.tree-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tree-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+.tree-scroll:hover::-webkit-scrollbar-thumb,
+.tree-scroll:focus-within::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+}
+
 @keyframes pulse-master {
   0% {
     box-shadow: 0 0 0 0 rgba(198, 244, 50, 0.6);

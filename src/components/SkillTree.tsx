@@ -140,7 +140,7 @@ export function SkillTree({
       {/* Outer element scrolls; inner `containerRef` grows to the full content
           width so the SVG overlay covers every node and stays aligned while the
           user pans horizontally on a small screen. */}
-      <div className="-mx-5 overflow-x-auto overscroll-x-contain px-5 pb-2 [scrollbar-width:thin] [-webkit-overflow-scrolling:touch]">
+      <div className="tree-scroll -mx-5 overflow-x-auto overscroll-x-contain px-5 pb-2 [-webkit-overflow-scrolling:touch]">
         <div ref={containerRef} className="relative inline-block min-w-full">
           <svg
             className="pointer-events-none absolute inset-0 h-full w-full"
