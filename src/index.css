@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink text-zinc-100 font-sans antialiased;
+}
+
+/* Thin custom scrollbars to match the dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+@keyframes pulse-master {
+  0% {
+    box-shadow: 0 0 0 0 rgba(198, 244, 50, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(198, 244, 50, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(198, 244, 50, 0);
+  }
+}
+
+.animate-master {
+  animation: pulse-master 0.6s ease-out;
+}
