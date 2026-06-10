@@ -36,14 +36,19 @@ export function SkillDetailPanel({
   const locked = state === "locked";
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:items-stretch sm:justify-end sm:p-0"
+      role="dialog"
+      aria-modal="true"
+    >
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden
       />
+      {/* Centered popup card on mobile; full-height side panel from sm+ */}
       <aside
-        className="relative flex h-full w-full max-w-md flex-col gap-6 overflow-y-auto border-l border-edge bg-surface p-6 shadow-2xl"
+        className="relative flex max-h-[85vh] w-full max-w-md flex-col gap-6 overflow-y-auto rounded-2xl border border-edge bg-surface p-6 shadow-2xl sm:h-full sm:max-h-none sm:rounded-none"
         data-testid="detail-panel"
       >
         <div className="flex items-start justify-between gap-4">
