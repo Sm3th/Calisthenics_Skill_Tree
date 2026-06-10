@@ -42,7 +42,7 @@ export function SkillNode({
       data-testid={`skill-node-${skill.id}`}
       title={`${skill.name} — ${STATE_LABEL[state]}`}
       className={[
-        "group relative flex w-44 flex-col gap-1 rounded-xl border px-4 py-3 text-left transition-all",
+        "group relative flex w-40 flex-col gap-1 rounded-xl border px-3.5 py-3 text-left transition-all sm:w-44 sm:px-4",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/80",
         STATE_STYLES[state],
         selected ? "scale-[1.02] ring-2 ring-lime" : "",

@@ -20,7 +20,7 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="border-b border-edge bg-gradient-to-b from-surface to-ink">
-      <div className="mx-auto max-w-6xl px-5 py-10">
+      <div className="mx-auto max-w-6xl px-5 py-8 sm:py-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lime">

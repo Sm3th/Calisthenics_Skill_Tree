@@ -115,7 +115,19 @@ export function SkillTree({
   useEffect(() => {
     const handle = () => measure();
     window.addEventListener("resize", handle);
-    return () => window.removeEventListener("resize", handle);
+
+    // ResizeObserver catches content reflow (filtering, font load, mobile
+    // address-bar resize) that a window resize listener alone would miss.
+    const ro =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(handle)
+        : null;
+    if (ro && containerRef.current) ro.observe(containerRef.current);
+
+    return () => {
+      window.removeEventListener("resize", handle);
+      ro?.disconnect();
+    };
   }, [measure]);
 
   if (visible.length === 0) return null;
@@ -125,28 +137,35 @@ export function SkillTree({
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-zinc-400">
         {category}
       </h3>
-      <div ref={containerRef} className="relative overflow-x-auto pb-2">
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full"
-          aria-hidden
-        >
-          {lines.map((l, i) => (
-            <line
-              key={i}
-              x1={l.x1}
-              y1={l.y1}
-              x2={l.x2}
-              y2={l.y2}
-              stroke={l.active ? "#c6f432" : "#2a2a2a"}
-              strokeWidth={l.active ? 2 : 1.5}
-              strokeDasharray={l.active ? "0" : "4 4"}
-            />
-          ))}
-        </svg>
-        <div className="relative flex gap-10">
-          {cols.map((col, ci) => (
-            <div key={ci} className="flex flex-col justify-center gap-5">
-              {col.map((skill) => (
+      {/* Outer element scrolls; inner `containerRef` grows to the full content
+          width so the SVG overlay covers every node and stays aligned while the
+          user pans horizontally on a small screen. */}
+      <div className="-mx-5 overflow-x-auto overscroll-x-contain px-5 pb-2 [scrollbar-width:thin] [-webkit-overflow-scrolling:touch]">
+        <div ref={containerRef} className="relative inline-block min-w-full">
+          <svg
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            aria-hidden
+          >
+            {lines.map((l, i) => (
+              <line
+                key={i}
+                x1={l.x1}
+                y1={l.y1}
+                x2={l.x2}
+                y2={l.y2}
+                stroke={l.active ? "#c6f432" : "#2a2a2a"}
+                strokeWidth={l.active ? 2 : 1.5}
+                strokeDasharray={l.active ? "0" : "4 4"}
+              />
+            ))}
+          </svg>
+          <div className="relative flex gap-6 sm:gap-10">
+            {cols.map((col, ci) => (
+              <div
+                key={ci}
+                className="flex flex-col justify-center gap-4 sm:gap-5"
+              >
+                {col.map((skill) => (
                 <div
                   key={skill.id}
                   ref={(el) => {
@@ -161,10 +180,11 @@ export function SkillTree({
                     justMastered={justMasteredId === skill.id}
                     onSelect={onSelect}
                   />
-                </div>
-              ))}
-            </div>
-          ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
